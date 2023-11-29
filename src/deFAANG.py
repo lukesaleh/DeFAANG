@@ -1,41 +1,89 @@
 import os
+import heapq
+import pickle
+import numpy as np
 
-# this method should return the correlation between two stocks 
-def correlation_retriever(file_path1, file_path2):
-    return 0.0
+class MaxHeap:
+    def __init__(self, max_size):
+        self.max_size = max_size
+        self.heap = []
 
-# this method should return a dictionary, the value being the stock name and the value a pair of std_deviation and price
-def stock_info():
-    std_deviation = 0.0
-    price = 0.0
+    def push(self, stock):
+        heapq.heappush(self.heap, (-stock[1], stock[0]))
+        if len(self.heap) > self.max_size:
+            heapq.heappop(self.heap)
 
+    def pop(self):
+        if self.heap:
+            return (-heapq.heappop(self.heap)[0], self.heap[0][1])
+        else:
+            raise IndexError("pop from an empty heap")
 
+    def peek(self):
+        if self.heap:
+            return (-self.heap[0][0], self.heap[0][1])
+        else:
+            return None
 
-def Graph_build(file_list):
-    rows = cols = len(file_list)
+    def get_heap(self):
+        return self.heap
 
-    Adj_matrix = [[0] * cols for i in range(rows)]
+    def print_heap(self):
+        print("Values in the max-heap:")
+        for value, name in self.heap:
+            print(f"Name: {name}, Value: {-value}")
 
-    for index1, file1 in enumerate(file_list):
-        for index2, file2 in enumerate(file_list):
-            Adj_matrix[index1][index2] = correlation_retriever(file1, file2)
-    
-    return Adj_matrix
-    
+class MinHeap:
+    def __init__(self, max_size):
+        self.max_size = max_size
+        self.heap = []
+
+    def push(self, stock):
+        heapq.heappush(self.heap, (stock[1], stock[0]))
+        if len(self.heap) > self.max_size:
+            heapq.heappop(self.heap)
+
+    def pop(self):
+        if self.heap:
+            return heapq.heappop(self.heap)
+        else:
+            raise IndexError("pop from an empty heap")
+
+    def peek(self):
+        if self.heap:
+            return self.heap[0]
+        else:
+            return None
+
+    def get_heap(self):
+        return self.heap
+
+    def print_heap(self):
+        print("Values in the min-heap:")
+        for value, name in self.heap:
+            print(f"Name: {name}, Value: {value}")
+
 
 def main():
-     # Assuming your_script.py is located in the source_directory
-    project_directory = os.path.dirname(os.path.abspath("main.py"))  # Get the directory of the script
+    pkl_path = os.path.join(os.getcwd(), 'adj_list.pkl')
 
-    # Construct the path to the "individual_stocks_5yr" directory
-    stocks_directory = os.path.join(project_directory, 'individual_stocks_5yr')
-
-    # Get a list of file names in the "individual_stocks_5yr" directory
-    file_list = os.listdir(stocks_directory)
-
-    stock_graph = Graph_build(file_list)
+    with open(pkl_path, 'rb') as file:
+        adj_list = pickle.load(file)
     
-    stock_indices = {index: stock_name.replace('_data.csv', '') for index, stock_name in enumerate(file_list)}
+    budget = input("Budget: \n")
+    stock = input("Pick a stock you like: \n")
+    num_stocks = input("How many stocks would you like to invest in?\n")
+    div = input("What portfolio type would you like? (diversified or correlated)\n")
+
+    if div == "diversified":
+        stock_heap = MaxHeap(int(num_stocks))
+    elif div == "correlated":
+        stock_heap = MinHeap(int(num_stocks))
+    
+    for stock, correlation in adj_list[stock].items():
+        stock_heap.push((stock, correlation))
+    
+    stock_heap.print_heap()
 
 # Implements the main
 if __name__ == "__main__":
