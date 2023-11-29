@@ -1,18 +1,14 @@
 import os
 
-
-
-
+# this method should return the correlation between two stocks 
 def correlation_retriever(file_path1, file_path2):
     return 0.0
 
-def stock_info(stock_dictionary):
-    
-
-
+# this method should return a dictionary, the value being the stock name and the value a pair of std_deviation and price
+def stock_info():
     std_deviation = 0.0
     price = 0.0
-    return std_deviation, price
+
 
 
 def Graph_build(file_list):
@@ -38,6 +34,7 @@ def main():
     file_list = os.listdir(stocks_directory)
 
     stock_graph = Graph_build(file_list)
+    
     stock_indices = {index: stock_name.replace('_data.csv', '') for index, stock_name in enumerate(file_list)}
 
 # Implements the main
