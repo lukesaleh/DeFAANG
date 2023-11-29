@@ -6,7 +6,7 @@ import os
 def correlation_retriever(file_path1, file_path2):
     return 0.0
 
-def stock_info(file_list):
+def stock_info(stock_dictionary):
     
 
 
@@ -16,10 +16,6 @@ def stock_info(file_list):
 
 
 def Graph_build(file_list):
-   
-
-    stock_indices = {index: stock_name.replace('_data.csv', '') for index, stock_name in enumerate(file_list)}
-
     rows = cols = len(file_list)
 
     Adj_matrix = [[0] * cols for i in range(rows)]
@@ -42,8 +38,7 @@ def main():
     file_list = os.listdir(stocks_directory)
 
     stock_graph = Graph_build(file_list)
-
-    
+    stock_indices = {index: stock_name.replace('_data.csv', '') for index, stock_name in enumerate(file_list)}
 
 # Implements the main
 if __name__ == "__main__":
