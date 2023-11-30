@@ -70,14 +70,15 @@ def main():
     with open(pkl_path, 'rb') as file:
         adj_list = pickle.load(file)
     
-    budget = input("Budget: \n")
-    stock = input("Pick a stock you like: \n")
-    num_stocks = input("How many stocks would you like to invest in?\n")
-    div = input("What portfolio type would you like? (diversified or correlated)\n")
+    budget = input("Budget: $")
+    stock = input("Pick a stock for reference: ")
+    num_stocks = input("How many stocks would you like to invest in?: ")
+    div = input("What would you like to do? (invest or short): ")
+    risk = input("High or low risk investment strategy?: ")
 
-    if div == "diversified":
+    if div == "short":
         stock_heap = MaxHeap(int(num_stocks))
-    elif div == "correlated":
+    elif div == "invest":
         stock_heap = MinHeap(int(num_stocks))
     
     for stock, correlation in adj_list[stock].items():
