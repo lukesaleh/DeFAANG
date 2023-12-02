@@ -9,7 +9,7 @@ def knapsack_with_stocks_and_names(stocks, budget):
     chosen_stocks = {}
 
     # Build the table in a bottom-up manner
-    for i in range(1, num_stocks + 1):
+    for i in range(num_stocks +1):
         stock_name, (stock_price, stock_risk) = list(stocks.items())[i - 1]
 
         for w in range(int(budget) + 1):
@@ -30,7 +30,7 @@ def knapsack_with_stocks_and_names(stocks, budget):
 
     # Retrieve the chosen stocks with their quantities
     result_stocks = chosen_stocks.get(int(budget), {})
-    print("Optimal stock allocation for maximized risk(only buying full shares):")
+    print("Optimal stock allocation for maximized risk (only buying full shares):")
     # Return the chosen stocks with their names and quantities
     return result_stocks
 

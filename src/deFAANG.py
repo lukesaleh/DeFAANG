@@ -105,7 +105,7 @@ def main():
     risk_bool = False
     if risk == "H":
         risk_bool = True
-    if risk == "L":
+    elif risk == "L":
         risk_bool = False
     if div == "short":
         stock_heap = MaxHeap(int(num_stocks))
@@ -125,10 +125,10 @@ def main():
                 stock_dict[stock_name] = (value, std_dev)
 
     amount_to_invest(stock_dict, risk_bool, budget)
-
-    opt_stocks = Knapsack.knapsack_with_stocks_and_names(stock_dict, int(budget))
-    for stock, quantity in opt_stocks.items():
-        print(f"{stock} (Quantity: {quantity})")
+    if risk_bool:
+        opt_stocks = Knapsack.knapsack_with_stocks_and_names(stock_dict, int(budget))
+        for stock, quantity in opt_stocks.items():
+            print(f"{stock} (Quantity: {quantity})")
 
 # Implements the main
 if __name__ == "__main__":
