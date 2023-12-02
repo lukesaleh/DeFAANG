@@ -70,7 +70,7 @@ class MinHeap:
 
 def amount_to_invest(stocks, risk, budget):
     # normalize the value of standard deviations for each of the stocks
-    print("Your optimal portfolio: ")
+    print("Budget allocation: ")
     stock_dict = {}
 
     if risk:

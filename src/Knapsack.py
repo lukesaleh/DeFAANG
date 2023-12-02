@@ -30,7 +30,7 @@ def knapsack_with_stocks_and_names(stocks, budget):
 
     # Retrieve the chosen stocks with their quantities
     result_stocks = chosen_stocks.get(int(budget), {})
-
+    print("Optimal stock allocation for maximized risk(only buying full shares):")
     # Return the chosen stocks with their names and quantities
     return result_stocks
 
