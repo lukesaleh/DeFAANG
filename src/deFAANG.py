@@ -70,18 +70,21 @@ class MinHeap:
 def amount_to_invest(stocks, risk, budget):
     # normalize the value of standard deviations for each of the stocks
     print("Your optimal portfolio: ")
-    total = 0.0
     stock_dict = {}
 
-    # Use items() to iterate over the dictionary
-    for name, std_dev in stocks.items():
-        total += std_dev
+    if risk:
+        # Use items() to iterate over the dictionary
+        total_risk = sum(risk_value for name, risk_value in stocks.items())
 
-    for name, std_dev in stocks.items():
-        stock_dict[name] = (std_dev / total) * budget
-        if risk:
-            stock_dict[name] = budget - stock_dict[name]
-        print(name + ": $" + str(stock_dict[name]))
+        for name, risk_value in stocks.items():
+            stock_dict[name] = (risk_value / total_risk) * budget
+            print(f"{name}: ${stock_dict[name]:.2f}")
+    else:
+        total_risk = sum(1 / risk_value for name, risk_value in stocks.items())
+
+        for name, risk_value in stocks.items():
+            stock_dict[name] = budget * (1 / risk_value) / total_risk
+            print(f"{name}: ${stock_dict[name]:.2f}")
 
 
 def main():
@@ -92,16 +95,16 @@ def main():
 
     clean_stck_data = pd.read_csv('../clean_data/stocks_clean.csv')
     budget = float(input("Budget(No spaces, commas or dots): $"))
-    stock = input("Pick a stock from which you'd like to draw correlations (Ex: APPL): ")
+    stock = input("Pick a stock from which you'd like to draw correlations (Ex: AAPL): ")
     num_stocks = int(input("How many stocks would you like to invest in?: "))
     div = input("What would you like to do? (invest or short): ")
     risk = input("High or low risk investment strategy? (H or L): ")
     stock_dict = {}
     risk_bool = False
     if risk == "H":
-        risk_bool = False
-    if risk == "L":
         risk_bool = True
+    if risk == "L":
+        risk_bool = False
     if div == "short":
         stock_heap = MaxHeap(int(num_stocks))
     elif div == "invest":
