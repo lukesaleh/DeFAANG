@@ -3,6 +3,7 @@ import heapq
 import pickle
 import numpy as np
 import pandas as pd
+import Knapsack
 
 
 class MaxHeap:
@@ -74,16 +75,16 @@ def amount_to_invest(stocks, risk, budget):
 
     if risk:
         # Use items() to iterate over the dictionary
-        total_risk = sum(risk_value for name, risk_value in stocks.items())
+        total_risk = sum(risk_value[1] for name, risk_value in stocks.items())
 
         for name, risk_value in stocks.items():
-            stock_dict[name] = (risk_value / total_risk) * budget
+            stock_dict[name] = (risk_value[1] / total_risk) * budget
             print(f"{name}: ${stock_dict[name]:.2f}")
     else:
-        total_risk = sum(1 / risk_value for name, risk_value in stocks.items())
+        total_risk = sum(1 / risk_value[1] for name, risk_value in stocks.items())
 
         for name, risk_value in stocks.items():
-            stock_dict[name] = budget * (1 / risk_value) / total_risk
+            stock_dict[name] = budget * (1 / risk_value[1]) / total_risk
             print(f"{name}: ${stock_dict[name]:.2f}")
 
 
@@ -94,11 +95,12 @@ def main():
         adj_list = pickle.load(file)
 
     clean_stck_data = pd.read_csv('../clean_data/stocks_clean.csv')
-    budget = float(input("Budget(No spaces, commas or dots): $"))
+    budget = float(input("Budget (No spaces, commas or dots): $"))
     stock = input("Pick a stock from which you'd like to draw correlations (Ex: AAPL): ")
     num_stocks = int(input("How many stocks would you like to invest in?: "))
     div = input("What would you like to do? (invest or short): ")
     risk = input("High or low risk investment strategy? (H or L): ")
+
     stock_dict = {}
     risk_bool = False
     if risk == "H":
@@ -119,11 +121,14 @@ def main():
             if row['Name'] == name:
                 stock_name = row['Name']
                 std_dev = row['StandDev']
-                stock_dict[stock_name] = std_dev
+                value = row['LastClosingVal']
+                stock_dict[stock_name] = (value, std_dev)
 
     amount_to_invest(stock_dict, risk_bool, budget)
 
-
+    opt_stocks = Knapsack.knapsack_with_stocks_and_names(stock_dict, int(budget))
+    for stock, quantity in opt_stocks.items():
+        print(f"{stock} (Quantity: {quantity})")
 
 # Implements the main
 if __name__ == "__main__":
