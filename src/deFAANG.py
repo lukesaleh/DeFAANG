@@ -95,7 +95,7 @@ def main():
         adj_list = pickle.load(file)
 
     clean_stck_data = pd.read_csv('../clean_data/stocks_clean.csv')
-    budget = float(input("Budget (No spaces, commas or dots): $"))
+    budget = float(input("Budget (No spaces or commas): $"))
     stock = input("Pick a stock from which you'd like to draw correlations (Ex: AAPL): ")
     num_stocks = int(input("How many stocks would you like to invest in?: "))
     div = input("What would you like to do? (invest or short): ")
