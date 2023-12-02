@@ -118,11 +118,7 @@ def main():
                 std_dev = row['StandDev']
                 stock_dict[stock_name] = std_dev
 
-
- #   stock_heap.print_heap()
-
     amount_to_invest(stock_dict, risk_bool, budget)
-
 
 
 
