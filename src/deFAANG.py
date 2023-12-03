@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import Knapsack
-import Graph
+import GraphClass
 
 class MaxHeap:
     def __init__(self, max_size):
@@ -90,18 +90,29 @@ def amount_to_invest(stocks, risk, budget):
 def csv_loader(filepath):
     filenames = os.listdir(filepath)
     csv_names = [filename for filename in filenames if filename.endswith('.csv')]
-    csv_files = []
+    csv_files = {}
     for name in csv_names:
-        csv_files.append(pd.read_csv(filepath+name))
+        df = pd.read_csv(filepath+name)
+        csv_files[df.Name.iloc[0]] = df
     return csv_files
 
 def main():
-    pkl_path = os.path.join(os.getcwd(), 'adj_list.pkl')
+    # pkl_path = os.path.join(os.getcwd(), 'adj_list.pkl')
 
-    with open(pkl_path, 'rb') as file:
-        adj_list = pickle.load(file)
+    # with open(pkl_path, 'rb') as file:
+    #     adj_list = pickle.load(file)
+    print('Importing csv files into dataframes...')
+    project_directory = os.path.dirname(os.path.abspath("main.py"))
+    #stocks_directory = os.path.dirname(os.path.abspath(project_directory)) 
+    csv_files = csv_loader(project_directory+'\\individual_stocks_5yr\\')
+    
 
-    clean_stck_data = pd.read_csv('../clean_data/stocks_clean.csv')
+    print('Building a graph as adjacency matrix...')
+    graph = GraphClass.Graph()
+    GraphClass.build_graph(csv_files, graph)
+
+    print('Successfully imported all data and built a graph!')
+    clean_stck_data = pd.read_csv(project_directory+'\\clean_data\\stocks_clean.csv')
     budget = float(input("Budget (No spaces or commas): $"))
     stock = input("Pick a stock from which you'd like to draw correlations (Ex: AAPL): ")
     num_stocks = int(input("How many stocks would you like to invest in?: "))

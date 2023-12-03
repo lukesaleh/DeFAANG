@@ -39,17 +39,17 @@ def correlation(stock_a, stock_b):
     corr = stock_a['close'].corr(stock_b['close'])
     return corr
 
-def build_graph(csv_list):
-    graph = Graph()
-    
-    vertices = []
-    for csv in csv_list:
-        vertices.append(csv.Name.iloc[0])
+def build_graph(csv_list, graph):
+
+    vertices = csv_list.keys()
     for vertex in vertices:
         graph.add_vertex(vertex)
     
     edges = itertools.combinations(vertices,2)
     for edge in edges:
-        weight = correlation()
-        graph.add_edge(edge[0], edge[1])
+        weight = correlation(csv_list[edge[0]], csv_list[edge[1]])
+        graph.add_edge(edge[0], edge[1], weight)
 
+    #graph.print_matrix()
+    weight = graph.get_weight('A','AAPL')
+    print(weight)
