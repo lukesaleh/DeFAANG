@@ -39,17 +39,28 @@ def main():
 
     # with open(pkl_path, 'rb') as file:
     #     adj_list = pickle.load(file)
+    start = input("Ready to start the program? (input yes or no)")
+    while(start != "yes"):
+        start = input("Ready to start the program? (input yes or no)")
+    print('Starting the program!')
     print('Importing csv files into dataframes...')
     project_directory = os.path.dirname(os.path.abspath("src"))
     #stocks_directory = os.path.dirname(os.path.abspath(project_directory)) 
     csv_files = csv_loader(project_directory+'/individual_stocks_5yr/')
+    print('Successfully imported all data!')
+    data_structure = input("Would you like to build an adjacency matrix or an adjacency list? (M or L)")
     
+    if data_structure == 'M':
+        print('Building a graph as adjacency matrix...')
+        graph = GraphClass.AdjacencyMatrixGraph()
+        GraphClass.build_adjacency_matrix(csv_files, graph)
+        print('Successfully built an adjacency matrix!')
+    elif data_structure == 'L':
+        print('Building a graph as adjacency list...')
+        graph = GraphClass.AdjacencyListGraph()
+        GraphClass.build_adjacency_list(csv_files, graph)
+        print('Successfully built an adjacency list!')
 
-    print('Building a graph as adjacency matrix...')
-    graph = GraphClass.Graph()
-    GraphClass.build_graph(csv_files, graph)
-
-    print('Successfully imported all data and built a graph!')
     clean_stck_data = pd.read_csv(project_directory+'/clean_data/stocks_clean.csv')
     budget = float(input("Budget (No spaces or commas): $"))
     stock = input("Pick a stock from which you'd like to draw correlations (Ex: AAPL): ")
@@ -68,7 +79,7 @@ def main():
     elif div == "invest":
         stock_heap = Heaps.MinHeap(int(num_stocks))
 
-    for stock, correlation in graph.adjacency_matrix[stock].items():
+    for stock, correlation in graph.adjacency[stock].items():
         stock_heap.push((stock, correlation))
 
     for index, row in clean_stck_data.iterrows():
