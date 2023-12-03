@@ -42,7 +42,7 @@ def main():
     print('Importing csv files into dataframes...')
     project_directory = os.path.dirname(os.path.abspath("main.py"))
     #stocks_directory = os.path.dirname(os.path.abspath(project_directory)) 
-    csv_files = csv_loader(project_directory+'\\individual_stocks_5yr\\')
+    csv_files = csv_loader(project_directory+'/individual_stocks_5yr/')
     
 
     print('Building a graph as adjacency matrix...')
