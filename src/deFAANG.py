@@ -39,7 +39,7 @@ def main():
 
     # with open(pkl_path, 'rb') as file:
     #     adj_list = pickle.load(file)
-    start = input("Ready to start the program? (input yes or no)")
+    start = input("Ready to start the program? (input yes or no) ")
     while(start != "yes"):
         start = input("Ready to start the program? (input yes or no)")
     print('Starting the program!')
@@ -48,7 +48,7 @@ def main():
     #stocks_directory = os.path.dirname(os.path.abspath(project_directory)) 
     csv_files = csv_loader(project_directory+'/individual_stocks_5yr/')
     print('Successfully imported all data!')
-    data_structure = input("Would you like to build an adjacency matrix or an adjacency list? (M or L)")
+    data_structure = input("Would you like to build an adjacency matrix or an adjacency list? (M or L) ")
     
     if data_structure == 'M':
         print('Building a graph as adjacency matrix...')
