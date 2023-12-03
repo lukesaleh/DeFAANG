@@ -1,5 +1,4 @@
 import os
-import heapq
 import pickle
 import numpy as np
 import pandas as pd
@@ -69,7 +68,7 @@ def main():
     elif div == "invest":
         stock_heap = Heaps.MinHeap(int(num_stocks))
 
-    for stock, correlation in adj_list[stock].items():
+    for stock, correlation in graph.adjacency_matrix[stock].items():
         stock_heap.push((stock, correlation))
 
     for index, row in clean_stck_data.iterrows():
