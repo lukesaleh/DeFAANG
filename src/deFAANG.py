@@ -53,12 +53,12 @@ def main():
     if data_structure == 'M':
         print('Building a graph as adjacency matrix...')
         graph = GraphClass.AdjacencyMatrixGraph()
-        GraphClass.build_adjacency_matrix(csv_files, graph)
+        GraphClass.build_graph(csv_files, graph)
         print('Successfully built an adjacency matrix!')
     elif data_structure == 'L':
         print('Building a graph as adjacency list...')
         graph = GraphClass.AdjacencyListGraph()
-        GraphClass.build_adjacency_list(csv_files, graph)
+        GraphClass.build_graph(csv_files, graph)
         print('Successfully built an adjacency list!')
 
     clean_stck_data = pd.read_csv(project_directory+'/clean_data/stocks_clean.csv')
