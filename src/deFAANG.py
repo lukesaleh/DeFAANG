@@ -40,7 +40,7 @@ def main():
     # with open(pkl_path, 'rb') as file:
     #     adj_list = pickle.load(file)
     print('Importing csv files into dataframes...')
-    project_directory = os.path.dirname(os.path.abspath("main.py"))
+    project_directory = os.path.dirname(os.path.abspath("src"))
     #stocks_directory = os.path.dirname(os.path.abspath(project_directory)) 
     csv_files = csv_loader(project_directory+'/individual_stocks_5yr/')
     
@@ -50,7 +50,7 @@ def main():
     GraphClass.build_graph(csv_files, graph)
 
     print('Successfully imported all data and built a graph!')
-    clean_stck_data = pd.read_csv(project_directory+'\\clean_data\\stocks_clean.csv')
+    clean_stck_data = pd.read_csv(project_directory+'/clean_data/stocks_clean.csv')
     budget = float(input("Budget (No spaces or commas): $"))
     stock = input("Pick a stock from which you'd like to draw correlations (Ex: AAPL): ")
     num_stocks = int(input("How many stocks would you like to invest in?: "))
