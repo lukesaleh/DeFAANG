@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import Knapsack
-
+import Graph
 
 class MaxHeap:
     def __init__(self, max_size):
@@ -87,6 +87,13 @@ def amount_to_invest(stocks, risk, budget):
             stock_dict[name] = budget * (1 / risk_value[1]) / total_risk
             print(f"{name}: ${stock_dict[name]:.2f}")
 
+def csv_loader(filepath):
+    filenames = os.listdir(filepath)
+    csv_names = [filename for filename in filenames if filename.endswith('.csv')]
+    csv_files = []
+    for name in csv_names:
+        csv_files.append(pd.read_csv(filepath+name))
+    return csv_files
 
 def main():
     pkl_path = os.path.join(os.getcwd(), 'adj_list.pkl')
