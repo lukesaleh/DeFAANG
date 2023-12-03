@@ -39,7 +39,7 @@ def main():
 
     # with open(pkl_path, 'rb') as file:
     #     adj_list = pickle.load(file)
-    start = input("Ready to start the program? (input yes or no)")
+    start = input("Ready to start the program? (input yes or no) ")
     while(start != "yes"):
         start = input("Ready to start the program? (input yes or no)")
     print('Starting the program!')
