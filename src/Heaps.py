@@ -1,7 +1,8 @@
 class MaxHeap:
-    def __init__(self):
+    def __init__(self, n):
         # Initializes an empty heap list
         self.heap = []  
+        self.stock_num = n
 
     def insert(self, stock):
         # Inserts a new stock into the heap and then heapifies up
@@ -24,10 +25,10 @@ class MaxHeap:
         return max_value
 
     def top_stocks(self):
-        # Returns the top 5 stocks from the heap without altering the original heap
+        # Returns the top n stocks from the heap without altering the original heap
         temp_heap = self.heap.copy()
         top_stocks = []
-        for _ in range(5):
+        for _ in range(self.stock_num):
             if not self.heap:
                 break
             top_stocks.append(self.extract_max())
@@ -55,10 +56,10 @@ class MaxHeap:
             self._heapify_down(largest)
 
 class MinHeap:
-    def __init__(self):
+    def __init__(self, n):
         # Initializes an empty heap list
         self.heap = []
-
+        self.stock_num = n 
     def insert(self, stock):
         # Inserts a new stock into the heap and then heapifies up
         self.heap.append(stock)
@@ -80,10 +81,10 @@ class MinHeap:
         return min_value
 
     def top_stocks(self):
-        # Returns the top 5 stocks from the heap without altering the original heap
+        # Returns the top n stocks from the heap without altering the original heap
         temp_heap = self.heap.copy()
         top_stocks = []
-        for _ in range(5):
+        for _ in range(self.stock_num):
             if not self.heap:
                 break
             top_stocks.append(self.extract_min())
