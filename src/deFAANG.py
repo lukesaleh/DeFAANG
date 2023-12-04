@@ -93,9 +93,9 @@ def main():
     elif risk == "L":
         risk_bool = False
     if div == "short":
-        stock_heap = Heaps.MaxHeap(int(num_stocks))
-    elif div == "invest":
         stock_heap = Heaps.MinHeap(int(num_stocks))
+    elif div == "invest":
+        stock_heap = Heaps.MaxHeap(int(num_stocks))
 
     for correlated_stock, correlation in graph.adjacency[stock].items():
         stock_heap.insert((correlation, correlated_stock))
