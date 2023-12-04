@@ -93,19 +93,12 @@ def main():
     elif risk == "L":
         risk_bool = False
     if div == "short":
-        stock_heap = Heaps.MinHeap(int(num_stocks))
-    elif div == "invest":
         stock_heap = Heaps.MaxHeap(int(num_stocks))
+    elif div == "invest":
+        stock_heap = Heaps.MinHeap(int(num_stocks))
 
     for correlated_stock, correlation in graph.adjacency[stock].items():
         stock_heap.insert((correlation, correlated_stock))
-
-    # Now, print the top 5 correlated stocks
-    top_stocks = stock_heap.top_stocks()
-    print("Top 5 correlated stocks:")
-    for correlation, correlated_stock in top_stocks:
-        print(f"Stock: {correlated_stock}, Correlation: {correlation}")
-
 
     for index, row in clean_stck_data.iterrows():
         for stock_tuple in stock_heap.get_heap():

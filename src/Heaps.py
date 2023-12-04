@@ -3,37 +3,27 @@ class MaxHeap:
         # Initializes an empty heap list
         self.heap = []  
         self.stock_num = n
+        self.size = 0
 
     def insert(self, stock):
         # Inserts a new stock into the heap and then heapifies up
         self.heap.append(stock)
         self._heapify_up(len(self.heap) - 1)
+        if len(self.heap) > self.stock_num:
+            self.extract_max()
 
     def get_heap(self):
         # Returns the entire heap
         return self.heap
 
     def extract_max(self):
-        # Removes and returns the maximum value from the heap, then heapifies down
-        if not self.heap:
+        # Removes the maximum value from the heap, then heapifies down
+        if not self:
             return None
         if len(self.heap) == 1:
             return self.heap.pop()
-        max_value = self.heap[0]
         self.heap[0] = self.heap.pop()
         self._heapify_down(0)
-        return max_value
-
-    def top_stocks(self):
-        # Returns the top n stocks from the heap without altering the original heap
-        temp_heap = self.heap.copy()
-        top_stocks = []
-        for _ in range(self.stock_num):
-            if not self.heap:
-                break
-            top_stocks.append(self.extract_max())
-        self.heap = temp_heap
-        return top_stocks
 
     def _heapify_up(self, index):
         # Ensures the heap property is maintained after insertion
@@ -64,6 +54,8 @@ class MinHeap:
         # Inserts a new stock into the heap and then heapifies up
         self.heap.append(stock)
         self._heapify_up(len(self.heap) - 1)
+        if len(self.heap) > self.stock_num:
+            self.extract_min()
 
     def get_heap(self):
         # Returns the entire heap
@@ -75,21 +67,8 @@ class MinHeap:
             return None
         if len(self.heap) == 1:
             return self.heap.pop()
-        min_value = self.heap[0]
         self.heap[0] = self.heap.pop()
         self._heapify_down(0)
-        return min_value
-
-    def top_stocks(self):
-        # Returns the top n stocks from the heap without altering the original heap
-        temp_heap = self.heap.copy()
-        top_stocks = []
-        for _ in range(self.stock_num):
-            if not self.heap:
-                break
-            top_stocks.append(self.extract_min())
-        self.heap = temp_heap
-        return top_stocks
 
     def _heapify_up(self, index):
         # Ensures the heap property is maintained after insertion
