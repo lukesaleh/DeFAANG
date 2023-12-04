@@ -35,8 +35,9 @@ def csv_loader(filepath):
         csv_files[df.Name.iloc[0]] = df
     return csv_files
 
-def feature_extraction(csv_files):
+def feature_extraction(csv_files, directory):
     #extract features to allow easy access of the standard deviation (measure of risk) and latest price of the stock
+    features = pd.DataFrame(columns = ['Name', 'StandDev', 'LastClosingVal'])
     for stock in csv_files.values():
         std_dev = stock.close.std()
         name = stock.Name.iloc[0]
@@ -45,7 +46,7 @@ def feature_extraction(csv_files):
         ser = pd.Series(dict)
         new_row_df = pd.DataFrame(ser).transpose()
         features = pd.concat([features, new_row_df], ignore_index=True)
-    features.to_csv('../clean_data/stocks_clean.csv')
+    features.to_csv(directory+'/clean_data/stocks_clean.csv')
 
 def main():
     start = input("Ready to start the program? (input yes or no) ")
@@ -60,9 +61,8 @@ def main():
     print('Successfully imported all data in ',round(time.time()-start_time, 4),' seconds!\n')
 
     print('Extracting key features from the data for later analysis...')
-    features = pd.DataFrame(columns = ['Name', 'StandDev', 'LastClosingVal'])
     start_time = time.time()
-    
+    feature_extraction(csv_files, project_directory)
     print('Feature extraction complete in ',round(time.time()-start_time, 4),' seconds!\n')
     data_structure = input("Would you like to build an adjacency matrix or an adjacency list? (M or L)\n")
     
@@ -97,8 +97,15 @@ def main():
     elif div == "invest":
         stock_heap = Heaps.MinHeap(int(num_stocks))
 
-    for stock, correlation in graph.adjacency[stock].items():
-        stock_heap.push((stock, correlation))
+    for correlated_stock, correlation in graph.adjacency[stock].items():
+        stock_heap.insert((correlation, correlated_stock))
+
+    # Now, print the top 5 correlated stocks
+    top_stocks = stock_heap.top_stocks()
+    print("Top 5 correlated stocks:")
+    for correlation, correlated_stock in top_stocks:
+        print(f"Stock: {correlated_stock}, Correlation: {correlation}")
+
 
     for index, row in clean_stck_data.iterrows():
         for stock_tuple in stock_heap.get_heap():
