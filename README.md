@@ -11,7 +11,11 @@ Dependencies:
 3. Matplotlib
 
 How to run:
-1. Install all dependencies and make sure you're running Python 3.10
+1. Install Python 3.10
+2. Install all dependencies using a pip install
+3. Clone the repository or download the code
+4. Open the deFAANG.py file and run it
+5. Follow the prompts for inputs (be sure to only input exactly what is instructed)
 
 
 
