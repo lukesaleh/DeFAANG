@@ -51,7 +51,7 @@ def feature_extraction(csv_files, directory):
 def main():
     start = input("Ready to start the program? (input yes or no) ")
     while(start != "yes"):
-        start = input("Ready to start the program? (input yes or no)")
+        start = input("Ready to start the program? (input yes or no) ")
     print('Starting the program!')
     start_time = time.time()
     print('Importing csv files into dataframes...')
@@ -64,27 +64,115 @@ def main():
     start_time = time.time()
     feature_extraction(csv_files, project_directory)
     print('Feature extraction complete in ',round(time.time()-start_time, 4),' seconds!\n')
+
+
+
+    print("\nWelcome to DeFAANG investment!")
+    print('')
+
+    def slow_print(text, delay=0.003):
+        for line in text.splitlines():
+            for char in line:
+                print(char, end='', flush=True)
+                time.sleep(delay)
+            print()
+            time.sleep(delay)
+
+    # ASCII art text
+    art_text1 = "     _                ______ ___    ___   _   _ _____ "
+    art_text2 = "    | |               |  ___/ _ \\  / _ \\ | \\ | |  __ \\"
+    art_text3 = "  __| | ___   ______  | |_ / /_\\ \\/ /_\\ \\|  \\| | |  \\/"
+    art_text4 = " / _` |/ _ \\ |______| |  _||  _  ||  _  || . ` | | __ "
+    art_text5 = "| (_| |  __/          | |  | | | || | | || |\\  | |\\ \\"
+    art_text6 = " \__,_|\\___|          \\_|  \\_| |_/\\_| |_/\\_| \\_/\\____/"
+
+    art_text7 = "\n\n"
+    art_text8 = "           /^\\/^\\"
+    art_text9 = "         _|__|  O|"
+    art_text10 = "\\/     /~     \\_/ \\\\"
+    art_text11 = " \\____|__________/  \\"
+    art_text12 = "        \\_______      \\"
+    art_text13 = "                `\\     \\                 \\\\"
+    art_text14 = "                  |     |                  \\\\"
+    art_text15 = "                 /      /                    \\\\"
+    art_text16 = "               /     /                       \\\\"
+    art_text17 = "             /      /                         \\ \\"
+    art_text18 = "            /     /                            \\  \\"
+    art_text19 = "         /     /             _----_            \\   \\"
+    art_text20 = "        /     /           _-~      ~-_         |   |"
+    art_text21 = "       (      (        _-~    _--_    ~-_     _/   |"
+    art_text22 = "        \\      ~-____-~    _-~    ~-_    ~-_-~    /"
+    art_text23 = "          ~-_           _-~          ~-_       _-~"
+    art_text24 = "             ~--______-~                ~-___-~"
+    art_text25 = "\n(art from ASCII Art Archive)\n"
+
+    # Slow-print each line with a delay between lines
+    slow_print(art_text1)
+    slow_print(art_text2)
+    slow_print(art_text3)
+    slow_print(art_text4)
+    slow_print(art_text5)
+    slow_print(art_text6)
+    slow_print(art_text7)
+    slow_print(art_text8)
+    slow_print(art_text9)
+    slow_print(art_text10)
+    slow_print(art_text11)
+    slow_print(art_text12)
+    slow_print(art_text13)
+    slow_print(art_text14)
+    slow_print(art_text15)
+    slow_print(art_text16)
+    slow_print(art_text17)
+    slow_print(art_text18)
+    slow_print(art_text19)
+    slow_print(art_text20)
+    slow_print(art_text21)
+    slow_print(art_text22)
+    slow_print(art_text23)
+    slow_print(art_text24)
+    slow_print(art_text25)
+
+    print("\nYou will choose a stock from the S&P 500 and a few investment strategies.")
+    print("We will allocate your budget in the most optimal way possible,")
+    print("and optimize some stocks you may be able to pick if you want to maximize risk.\n")
     data_structure = input("Would you like to build an adjacency matrix or an adjacency list? (M or L)\n")
-    
+    while data_structure != "M" and data_structure != 'L':
+        data_structure = input("Please input M or L\n")
+
     if data_structure == 'M':
-        print('Building a graph as adjacency matrix...')
+        print('Building a graph as an adjacency matrix...')
         graph = GraphClass.AdjacencyMatrixGraph()
         start_time = time.time()
-        GraphClass.build_graph(csv_files, graph)
-        print('Successfully built an adjacency matrix in', round(time.time()-start_time, 4), ' seconds!\n')
+        GraphClass.build_graph(csv_files, graph)  # Assuming csv_files is defined
+        print('Successfully built an adjacency matrix in', round(time.time() - start_time, 4), ' seconds!\n')
     elif data_structure == 'L':
-        print('Building a graph as adjacency list...')
+        print('Building a graph as an adjacency list...')
         graph = GraphClass.AdjacencyListGraph()
         start_time = time.time()
-        GraphClass.build_graph(csv_files, graph)
-        print('Successfully built an adjacency list in', round(time.time()-start_time, 4), ' seconds!\n')
+        GraphClass.build_graph(csv_files, graph)  # Assuming csv_files is defined
+        print('Successfully built an adjacency list in', round(time.time() - start_time, 4), ' seconds!\n')
 
-    clean_stck_data = pd.read_csv(project_directory+'/clean_data/stocks_clean.csv')
-    budget = float(input("Budget (No spaces or commas):\n$"))
-    stock = input("Pick a stock from which you'd like to draw correlations (Ex: AAPL):\n")
-    num_stocks = int(input("How many stocks would you like to invest in?:\n"))
+    clean_stck_data = pd.read_csv(
+        project_directory + '/clean_data/stocks_clean.csv')  # Assuming project_directory is defined
+    budget = input("Budget (Only integers, no commas or spaces):\n$")
+    while not budget.isdigit():
+        budget = input("Budget (Only integers, no commas or spaces):\n$")
+    budget = int(budget)
+
+    stock = input("Pick a stock (S&P 500) from which you'd like to draw correlations (Ex: AAPL):\n")
+    num_stocks = input("How many stocks would you like to invest in? (integer):\n")
+    while not num_stocks.isdigit():
+        num_stocks = input("How many stocks would you like to invest in? (integer):\n")
+    num_stocks = int(num_stocks)
+
     div = input("What would you like to do? (invest or short):\n")
-    risk = input("High or low risk investment strategy? (H or L):\n")
+    while div != "invest" and div != "short":
+        div = input("Please input 'invest' or 'short': ")
+
+    risk = input("High or low-risk investment strategy? (H or L):\n")
+    while risk != "H" and risk != "L":  # Fixed the typo in the condition
+        risk = input("Please input 'H' or 'L': ")
 
     stock_dict = {}
     risk_bool = False
