@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 def amount_to_invest(stocks, risk, budget):
     # normalize the value of standard deviations for each of the stocks
-    print("Budget allocation: ")
+    print("\nBudget allocation: ")
     stock_dict = {}
 
     if risk:
@@ -215,11 +215,11 @@ def main():
             opt_stocks = Knapsack.knapsack_with_stocks_and_names(stock_dict, int(budget))
             for stock, quantity in opt_stocks.items():
                 print(f"{stock} (Quantity: {quantity})")
-        print('Would you like to explore the weekly percent change of a stock from your given portfolio (from 2013-2018)?')
+        print('\nWould you like to explore the weekly percent change of a stock from your given portfolio (from 2013-2018)?')
         user_input = input('Type "yes" if you would like to explore these plots, else type any other word:\n').lower()
         
         while user_input == "yes":
-            print('The original stock you selected was',stock_a)
+            print('\nThe original stock you selected was',stock_a)
             stock_b = input('Tell us the stock from your portfolio you would like to compare against the original stock:')
             while stock_b not in stock_dict.keys():
                 print('This stock was not in your portfolio')
@@ -230,7 +230,7 @@ def main():
             plt.ylabel('Percent change')
             plt.legend()
             plt.show()
-            print('Would you like to explore the weekly percent change of another stock from your given portfolio (from 2013-2018)?')
+            print('\nWould you like to explore the weekly percent change of another stock from your given portfolio (from 2013-2018)?')
             user_input = input('Type "yes" if you would like to explore these plots, else type any other word\n').lower()
         while(True):
             user_input = input('Would you like to repeat the program? Type "yes" or "no"\n').lower()
@@ -239,6 +239,7 @@ def main():
             else:
                 print("Invalid input")
         repeat = True if user_input == "yes" else False
+    print('\nThanks for investing with De-FAANG!')
 # Implements the main
 if __name__ == "__main__":
     main()
