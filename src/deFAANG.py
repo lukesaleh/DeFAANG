@@ -48,25 +48,7 @@ def feature_extraction(csv_files, directory):
         features = pd.concat([features, new_row_df], ignore_index=True)
     features.to_csv(directory+'/clean_data/stocks_clean.csv')
 
-def main():
-    start = input("Ready to start the program? (input yes or no) ")
-    while(start != "yes"):
-        start = input("Ready to start the program? (input yes or no) ")
-    print('Starting the program!')
-    start_time = time.time()
-    print('Importing csv files into dataframes...')
-    project_directory = os.path.dirname(os.path.abspath("src"))
-    #stocks_directory = os.path.dirname(os.path.abspath(project_directory)) 
-    csv_files = csv_loader(project_directory+'/individual_stocks_5yr/')
-    print('Successfully imported all data in ',round(time.time()-start_time, 4),' seconds!\n')
-
-    print('Extracting key features from the data for later analysis...')
-    start_time = time.time()
-    feature_extraction(csv_files, project_directory)
-    print('Feature extraction complete in ',round(time.time()-start_time, 4),' seconds!\n')
-
-
-
+def print_art():
     print("\nWelcome to DeFAANG investment!")
     print('')
 
@@ -132,6 +114,24 @@ def main():
     slow_print(art_text23)
     slow_print(art_text24)
     slow_print(art_text25)
+
+def main():
+    start = input("Ready to start the program? (input yes or no) ")
+    while(start != "yes"):
+        start = input("Ready to start the program? (input yes or no) ")
+    print('Starting the program!')
+    start_time = time.time()
+    print('Importing csv files into dataframes...')
+    project_directory = os.path.dirname(os.path.abspath("src"))
+    #stocks_directory = os.path.dirname(os.path.abspath(project_directory)) 
+    csv_files = csv_loader(project_directory+'/individual_stocks_5yr/')
+    print('Successfully imported all data in ',round(time.time()-start_time, 4),' seconds!\n')
+    print('Extracting key features from the data for later analysis...')
+    start_time = time.time()
+    feature_extraction(csv_files, project_directory)
+    print('Feature extraction complete in ',round(time.time()-start_time, 4),' seconds!\n')
+
+    print_art()
 
     print("\nYou will choose a stock from the S&P 500 and a few investment strategies.")
     print("We will allocate your budget in the most optimal way possible,")
