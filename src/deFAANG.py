@@ -4,6 +4,7 @@ import time
 import Knapsack
 import GraphClass
 import Heaps
+import matplotlib.pyplot as plt
 
 def amount_to_invest(stocks, risk, budget):
     # normalize the value of standard deviations for each of the stocks
@@ -34,6 +35,15 @@ def csv_loader(filepath):
         df = pd.read_csv(filepath+name)
         csv_files[df.Name.iloc[0]] = df
     return csv_files
+
+def percent_change(stock_df):
+    indices = [i for i in range(len(stock_df.index)) if i %5 == 0 or i == stock_df.index[-1]]
+    change = []
+    for i in range(len(indices)-1):
+        opening = indices[i]
+        closing = indices[i+1]
+        change.append((stock_df.close.iloc[closing] - stock_df.open.iloc[opening] / stock_df.open.iloc[opening]))
+    return change
 
 def feature_extraction(csv_files, directory):
     #extract features to allow easy access of the standard deviation (measure of risk) and latest price of the stock
@@ -131,79 +141,104 @@ def main():
     start_time = time.time()
     feature_extraction(csv_files, project_directory)
     print('Feature extraction complete in ',round(time.time()-start_time, 4),' seconds!\n')
+    repeat = True
+    while(repeat):
+        print_art()
 
-    print_art()
+        print("\nYou will choose a stock from the S&P 500 and a few investment strategies.")
+        print("We will allocate your budget in the most optimal way possible,")
+        print("and optimize some stocks you may be able to pick if you want to maximize risk.\n")
+        data_structure = input("Would you like to build an adjacency matrix or an adjacency list? (M or L)\n")
+        while data_structure != "M" and data_structure != 'L':
+            data_structure = input("Please input M or L\n")
 
-    print("\nYou will choose a stock from the S&P 500 and a few investment strategies.")
-    print("We will allocate your budget in the most optimal way possible,")
-    print("and optimize some stocks you may be able to pick if you want to maximize risk.\n")
-    data_structure = input("Would you like to build an adjacency matrix or an adjacency list? (M or L)\n")
-    while data_structure != "M" and data_structure != 'L':
-        data_structure = input("Please input M or L\n")
+        if data_structure == 'M':
+            print('Building a graph as an adjacency matrix...')
+            graph = GraphClass.AdjacencyMatrixGraph()
+            start_time = time.time()
+            GraphClass.build_graph(csv_files, graph)  # Assuming csv_files is defined
+            print('Successfully built an adjacency matrix in', round(time.time() - start_time, 4), ' seconds!\n')
+        elif data_structure == 'L':
+            print('Building a graph as an adjacency list...')
+            graph = GraphClass.AdjacencyListGraph()
+            start_time = time.time()
+            GraphClass.build_graph(csv_files, graph)  # Assuming csv_files is defined
+            print('Successfully built an adjacency list in', round(time.time() - start_time, 4), ' seconds!\n')
 
-    if data_structure == 'M':
-        print('Building a graph as an adjacency matrix...')
-        graph = GraphClass.AdjacencyMatrixGraph()
-        start_time = time.time()
-        GraphClass.build_graph(csv_files, graph)  # Assuming csv_files is defined
-        print('Successfully built an adjacency matrix in', round(time.time() - start_time, 4), ' seconds!\n')
-    elif data_structure == 'L':
-        print('Building a graph as an adjacency list...')
-        graph = GraphClass.AdjacencyListGraph()
-        start_time = time.time()
-        GraphClass.build_graph(csv_files, graph)  # Assuming csv_files is defined
-        print('Successfully built an adjacency list in', round(time.time() - start_time, 4), ' seconds!\n')
-
-    clean_stck_data = pd.read_csv(
-        project_directory + '/clean_data/stocks_clean.csv')  # Assuming project_directory is defined
-    budget = input("Budget (Only integers, no commas or spaces):\n$")
-    while not budget.isdigit():
+        clean_stck_data = pd.read_csv(
+            project_directory + '/clean_data/stocks_clean.csv')  # Assuming project_directory is defined
         budget = input("Budget (Only integers, no commas or spaces):\n$")
-    budget = int(budget)
+        while not budget.isdigit():
+            budget = input("Budget (Only integers, no commas or spaces):\n$")
+        budget = int(budget)
 
-    stock = input("Pick a stock (S&P 500) from which you'd like to draw correlations (Ex: AAPL):\n")
-    num_stocks = input("How many stocks would you like to invest in? (integer):\n")
-    while not num_stocks.isdigit():
+        stock = input("Pick a stock (S&P 500) from which you'd like to draw correlations (Ex: AAPL):\n")
+        stock_a = stock
         num_stocks = input("How many stocks would you like to invest in? (integer):\n")
-    num_stocks = int(num_stocks)
+        while not num_stocks.isdigit():
+            num_stocks = input("How many stocks would you like to invest in? (integer):\n")
+        num_stocks = int(num_stocks)
 
-    div = input("What would you like to do? (invest or short):\n")
-    while div != "invest" and div != "short":
-        div = input("Please input 'invest' or 'short': ")
+        div = input("What would you like to do? (invest or short):\n")
+        while div != "invest" and div != "short":
+            div = input("Please input 'invest' or 'short': ")
 
-    risk = input("High or low-risk investment strategy? (H or L):\n")
-    while risk != "H" and risk != "L":  # Fixed the typo in the condition
-        risk = input("Please input 'H' or 'L': ")
+        risk = input("High or low-risk investment strategy? (H or L):\n")
+        while risk != "H" and risk != "L":  # Fixed the typo in the condition
+            risk = input("Please input 'H' or 'L': ")
 
-    stock_dict = {}
-    risk_bool = False
-    if risk == "H":
-        risk_bool = True
-    elif risk == "L":
+        stock_dict = {}
         risk_bool = False
-    if div == "short":
-        stock_heap = Heaps.MaxHeap(int(num_stocks))
-    elif div == "invest":
-        stock_heap = Heaps.MinHeap(int(num_stocks))
+        if risk == "H":
+            risk_bool = True
+        elif risk == "L":
+            risk_bool = False
+        if div == "short":
+            stock_heap = Heaps.MaxHeap(int(num_stocks))
+        elif div == "invest":
+            stock_heap = Heaps.MinHeap(int(num_stocks))
 
-    for correlated_stock, correlation in graph.adjacency[stock].items():
-        stock_heap.insert((correlation, correlated_stock))
+        for correlated_stock, correlation in graph.adjacency[stock].items():
+            stock_heap.insert((correlation, correlated_stock))
 
-    for index, row in clean_stck_data.iterrows():
-        for stock_tuple in stock_heap.get_heap():
-            value, name = stock_tuple
-            if row['Name'] == name:
-                stock_name = row['Name']
-                std_dev = row['StandDev']
-                value = row['LastClosingVal']
-                stock_dict[stock_name] = (value, std_dev)
+        for index, row in clean_stck_data.iterrows():
+            for stock_tuple in stock_heap.get_heap():
+                value, name = stock_tuple
+                if row['Name'] == name:
+                    stock_name = row['Name']
+                    std_dev = row['StandDev']
+                    value = row['LastClosingVal']
+                    stock_dict[stock_name] = (value, std_dev)
 
-    amount_to_invest(stock_dict, risk_bool, budget)
-    if risk_bool:
-        opt_stocks = Knapsack.knapsack_with_stocks_and_names(stock_dict, int(budget))
-        for stock, quantity in opt_stocks.items():
-            print(f"{stock} (Quantity: {quantity})")
-
+        amount_to_invest(stock_dict, risk_bool, budget)
+        if risk_bool:
+            opt_stocks = Knapsack.knapsack_with_stocks_and_names(stock_dict, int(budget))
+            for stock, quantity in opt_stocks.items():
+                print(f"{stock} (Quantity: {quantity})")
+        print('Would you like to explore the weekly percent change of a stock from your given portfolio (from 2013-2018)?')
+        user_input = input('Type "yes" if you would like to explore these plots, else type any other word:\n').lower()
+        
+        while user_input == "yes":
+            print('The original stock you selected was',stock_a)
+            stock_b = input('Tell us the stock from your portfolio you would like to compare against the original stock:')
+            while stock_b not in stock_dict.keys():
+                print('This stock was not in your portfolio')
+                stock_b = input('Tell us the stock from your portfolio you would like to compare this stock to: ')
+            plt.plot(percent_change(csv_files[stock_a]), color = 'red', label = stock_a)
+            plt.plot(percent_change(csv_files[stock_b]), color = 'blue', label = stock_b)
+            plt.xlabel('Week number')
+            plt.ylabel('Percent change')
+            plt.legend()
+            plt.show()
+            print('Would you like to explore the weekly percent change of another stock from your given portfolio (from 2013-2018)?')
+            user_input = input('Type "yes" if you would like to explore these plots, else type any other word\n').lower()
+        while(True):
+            user_input = input('Would you like to repeat the program? Type "yes" or "no"\n').lower()
+            if user_input == "yes" or user_input == "no":
+                break
+            else:
+                print("Invalid input")
+        repeat = True if user_input == "yes" else False
 # Implements the main
 if __name__ == "__main__":
     main()
