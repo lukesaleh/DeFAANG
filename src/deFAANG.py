@@ -48,17 +48,18 @@ def feature_extraction(csv_files, directory):
         features = pd.concat([features, new_row_df], ignore_index=True)
     features.to_csv(directory+'/clean_data/stocks_clean.csv')
 
+def slow_print_color(text, color_code, delay=0.003):
+    for line in text.splitlines():
+        print(f'\033[{color_code}m', end='')  # Start color
+        for char in line:
+            print(char, end='', flush=True)
+            time.sleep(delay)
+        print('\033[0m')  # Reset color
+        time.sleep(delay)
+
 def print_art():
     print("\nWelcome to DeFAANG investment!")
     print('')
-
-    def slow_print(text, delay=0.003):
-        for line in text.splitlines():
-            for char in line:
-                print(char, end='', flush=True)
-                time.sleep(delay)
-            print()
-            time.sleep(delay)
 
     # ASCII art text
     art_text1 = "     _                ______ ___    ___   _   _ _____ "
@@ -89,31 +90,31 @@ def print_art():
     art_text25 = "\n(art from ASCII Art Archive)\n"
 
     # Slow-print each line with a delay between lines
-    slow_print(art_text1)
-    slow_print(art_text2)
-    slow_print(art_text3)
-    slow_print(art_text4)
-    slow_print(art_text5)
-    slow_print(art_text6)
-    slow_print(art_text7)
-    slow_print(art_text8)
-    slow_print(art_text9)
-    slow_print(art_text10)
-    slow_print(art_text11)
-    slow_print(art_text12)
-    slow_print(art_text13)
-    slow_print(art_text14)
-    slow_print(art_text15)
-    slow_print(art_text16)
-    slow_print(art_text17)
-    slow_print(art_text18)
-    slow_print(art_text19)
-    slow_print(art_text20)
-    slow_print(art_text21)
-    slow_print(art_text22)
-    slow_print(art_text23)
-    slow_print(art_text24)
-    slow_print(art_text25)
+    slow_print_color(art_text1, '36')  # Cyan color
+    slow_print_color(art_text2, '36')
+    slow_print_color(art_text3, '36')
+    slow_print_color(art_text4, '36')
+    slow_print_color(art_text5, '36')
+    slow_print_color(art_text6, '36')
+    slow_print_color(art_text7, '36')
+    slow_print_color(art_text8, '33')  # Yellow color
+    slow_print_color(art_text9, '33')
+    slow_print_color(art_text10, '33')
+    slow_print_color(art_text11, '33')
+    slow_print_color(art_text12, '33')
+    slow_print_color(art_text13, '33')
+    slow_print_color(art_text14, '33')
+    slow_print_color(art_text15, '33')
+    slow_print_color(art_text16, '33')
+    slow_print_color(art_text17, '33')
+    slow_print_color(art_text18, '33')
+    slow_print_color(art_text19, '33')
+    slow_print_color(art_text20, '33')
+    slow_print_color(art_text21, '33')
+    slow_print_color(art_text22, '33')
+    slow_print_color(art_text23, '33')
+    slow_print_color(art_text24, '33')
+    slow_print_color(art_text25, '33')
 
 def main():
     start = input("Ready to start the program? (input yes or no) ")
